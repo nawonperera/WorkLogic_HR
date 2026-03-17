@@ -63,8 +63,16 @@ public class EmployeeRepository : IRepository<Employee>
         return false;
     }
 
-    public void Save()
+    public bool Save()
     {
-        //_sampleData.GetSampleEmployees().SaveChanges();
+        try
+        {
+            //_sampleData.GetSampleEmployees().SaveChanges();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }

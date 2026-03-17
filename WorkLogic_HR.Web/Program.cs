@@ -1,7 +1,13 @@
+using WorkLogic_HR.Infrastucture;
+using WorkLogic_HR.Infrastucture.Repository;
+using WorkLogic_HR.Infrastucture.Repository.IRepository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IRepository<Employee>, EmployeeRepository>();
 
 var app = builder.Build();
 

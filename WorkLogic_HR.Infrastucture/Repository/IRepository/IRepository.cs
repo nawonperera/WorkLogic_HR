@@ -11,6 +11,6 @@ public interface IRepository<T> where T : class
     public void Create(T entity);
     public void Update(T entity);
     public bool Delete(int id);
-    public void Save();
+    public bool Save();
 
 }
