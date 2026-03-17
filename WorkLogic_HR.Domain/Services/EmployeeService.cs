@@ -66,7 +66,7 @@ public class EmployeeService : IEmployeeService
         return MapToDto(employee);
     }
 
-    public bool UpdateEmpoyer(EmployeeDto employee)
+    public bool UpdateEmpoyee(EmployeeDto employee)
     {
         if (employee == null)
         {

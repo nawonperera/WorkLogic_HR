@@ -10,7 +10,7 @@ public interface IEmployeeService
     public List<EmployeeDto> GetAllEmployees();
     public EmployeeDto? GetEmployeeById(int id);
     public bool CreateEmployee(EmployeeDto employee);
-    public bool UpdateEmpoyer(EmployeeDto employee);
+    public bool UpdateEmpoyee(EmployeeDto employee);
     public bool DeleteEmployee(int id);
     List<EmployeeDto> FilerEmployees(Func<EmployeeDto,bool> filter);
 
