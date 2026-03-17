@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace WorkLogic_HR.Core.Domain.Entities;
+namespace WorkLogic_HR.Core.DTO;
 
-public class Employee
+public class EmployeeDto
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)] //Database generates new Id automatically
     public int Id { get; set; }
 
     [Required(ErrorMessage = "Name is required")]
