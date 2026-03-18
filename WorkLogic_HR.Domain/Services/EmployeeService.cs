@@ -1,4 +1,5 @@
 ﻿using WorkLogic_HR.Core.Domain.Entities;
+using WorkLogic_HR.Core.Domain.RepositoryContracts;
 using WorkLogic_HR.Core.DTO;
 using WorkLogic_HR.Core.ServiceContracts;
 using WorkLogic_HR.Infrastucture.Repository.IRepository;
@@ -7,9 +8,9 @@ namespace WorkLogic_HR.Core.Services;
 
 public class EmployeeService : IEmployeeService
 {
-    private readonly IRepository<Employee> _employeeRepository;
+    private readonly IEmployeeRepository _employeeRepository;
 
-    public EmployeeService(IRepository<Employee> employeeRespository)
+    public EmployeeService(IEmployeeRepository employeeRespository)
     {
         _employeeRepository = employeeRespository;
     }

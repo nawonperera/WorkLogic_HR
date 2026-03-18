@@ -1,9 +1,10 @@
-﻿using WorkLogic_HR.Infrastucture.Data;
+﻿using WorkLogic_HR.Core.Domain.Entities;
+using WorkLogic_HR.Core.Domain.RepositoryContracts;
 using WorkLogic_HR.Infrastucture.Repository.IRepository;
 
 namespace WorkLogic_HR.Infrastucture.Repository;
 
-public class EmployeeRepository : IRepository<Employee>
+public class EmployeeRepository : IEmployeeRepository
 {
     //public readonly SampleData _sampleData;
     private readonly ApplicationDbContext _context;

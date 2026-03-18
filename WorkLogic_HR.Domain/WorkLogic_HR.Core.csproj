@@ -10,8 +10,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\WorkLogic_HR.Infrastucture\WorkLogic_HR.Infrastucture.csproj" />
-  </ItemGroup>
-
 </Project>

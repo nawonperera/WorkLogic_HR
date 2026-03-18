@@ -1,9 +1,10 @@
-﻿using WorkLogic_HR.Infrastucture.Data;
+﻿using WorkLogic_HR.Core.Domain.Entities;
+using WorkLogic_HR.Core.Domain.RepositoryContracts;
 using WorkLogic_HR.Infrastucture.Repository.IRepository;
 
 namespace WorkLogic_HR.Infrastucture.Repository;
 
-public class PublicHolidayRepository : IRepository<PublicHolidays>
+public class PublicHolidayRepository : IPublicHolidayRepository
 {
     private readonly ApplicationDbContext _context;
 
@@ -68,5 +69,13 @@ public class PublicHolidayRepository : IRepository<PublicHolidays>
             holiday.Name = entity.Name;
             holiday.Date = entity.Date;
         }
+    }
+
+    public List<PublicHolidays> GetSelectedHolidays(DateTime startDate, DateTime endDate)
+    {
+        return _context.PublicHolidays
+            .Where(x => x.Date >= startDate.Date && x.Date <= endDate.Date)
+            .OrderBy(h => h.Date)
+            .ToList();
     }
 }

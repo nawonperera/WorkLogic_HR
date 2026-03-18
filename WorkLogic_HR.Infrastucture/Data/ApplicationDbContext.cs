@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
-namespace WorkLogic_HR.Infrastucture.Data;
+using WorkLogic_HR.Core.Domain.Entities;
 
 public class ApplicationDbContext : DbContext
 {
