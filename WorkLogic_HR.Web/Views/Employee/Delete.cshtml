@@ -1,0 +1,27 @@
+﻿@model WorkLogic_HR.Core.DTO.EmployeeDto
+@{
+    ViewData["Title"] = "Delete Employee";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 border rounded shadow-sm p-4 text-center">
+        <h1 class="text-danger">Delete Employee?</h1>
+        <hr />
+        <dl class="row text-start mt-4">
+            <dt class="col-sm-5 ms-3">Employee Name:</dt>
+            <dd class="col-sm-6 text-muted">@Model.Name</dd>
+            
+            <dt class="col-sm-5 ms-3">Job Position:</dt>
+            <dd class="col-sm-6 text-muted">@Model.JobPosition</dd>
+            
+            <dt class="col-sm-5 ms-3">Email Address:</dt>
+            <dd class="col-sm-6 text-muted">@Model.Email</dd>
+        </dl>
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-action="Index" class="btn btn-secondary px-4">Cancel</a>
+            <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                <button type="submit" class="btn btn-danger px-4">Yes, Delete</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+﻿@model WorkLogic_HR.Core.DTO.EmployeeDto
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 border rounded shadow-sm p-4">
+        <h1>Employee Details</h1>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-4">ID:</dt>
+            <dd class="col-sm-8 text-muted">@Model.Id</dd>
+
+            <dt class="col-sm-4">Full Name:</dt>
+            <dd class="col-sm-8 text-muted">@Model.Name</dd>
+
+            <dt class="col-sm-4">Email Address:</dt>
+            <dd class="col-sm-8"><a href="mailto:@Model.Email">@Model.Email</a></dd>
+
+            <dt class="col-sm-4">Job Position:</dt>
+            <dd class="col-sm-8"><span class="badge bg-secondary p-2">@Model.JobPosition</span></dd>
+        </dl>
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning me-2">Edit</a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
