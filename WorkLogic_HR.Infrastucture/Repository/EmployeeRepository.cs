@@ -1,24 +1,27 @@
-﻿using WorkLogic_HR.Infrastucture.Repository.IRepository;
+﻿using WorkLogic_HR.Infrastucture.Data;
+using WorkLogic_HR.Infrastucture.Repository.IRepository;
 
 namespace WorkLogic_HR.Infrastucture.Repository;
 
 public class EmployeeRepository : IRepository<Employee>
 {
-    public readonly SampleData _sampleData;
+    //public readonly SampleData _sampleData;
+    private readonly ApplicationDbContext _context;
 
-    public EmployeeRepository()
+    public EmployeeRepository(ApplicationDbContext context)
     {
-        _sampleData = new SampleData();
+        //_sampleData = new SampleData();
+        _context = context;
     }
 
     public List<Employee> GetAll()
     {
-        return _sampleData.GetSampleEmployees().OrderBy(e => e.Name).ToList();
+        return _context.Employees.OrderBy(e => e.Name).ToList();
     }
 
     public Employee? GetById(int id)
     {
-        return _sampleData.GetSampleEmployees().FirstOrDefault(e => e.Id == id);
+        return _context.Employees.FirstOrDefault(e => e.Id == id);
     }
 
     public void Create(Employee entity)
@@ -27,7 +30,7 @@ public class EmployeeRepository : IRepository<Employee>
         {
             throw new ArgumentNullException(nameof(entity));
         }
-        _sampleData.GetSampleEmployees().Add(entity);
+        _context.Employees.Add(entity);
     }
 
     public void Update(Employee entity)
@@ -36,9 +39,9 @@ public class EmployeeRepository : IRepository<Employee>
         {
             throw new ArgumentNullException(nameof(entity));
         }
-        List<Employee> employees = _sampleData.GetSampleEmployees();
 
-        Employee? employee = employees.Find(e => e.Id == entity.Id);
+        //List<Employee> employees = _sampleData.GetSampleEmployees();
+        Employee? employee = _context.Employees.Find(entity.Id);
 
         if (employee != null)
         {
@@ -50,13 +53,13 @@ public class EmployeeRepository : IRepository<Employee>
 
     public bool Delete(int id)
     {
-        List<Employee> employees = _sampleData.GetSampleEmployees();
+        //List<Employee> employees = _sampleData.GetSampleEmployees();
 
-        Employee? employee = employees.Find(e => e.Id == id);
+        Employee? employee = _context.Employees.Find(id);
 
         if (employee != null)
         {
-            employees.Remove(employee);
+            _context.Employees.Remove(employee);
             return true;
         }
 
@@ -68,6 +71,7 @@ public class EmployeeRepository : IRepository<Employee>
         try
         {
             //_sampleData.GetSampleEmployees().SaveChanges();
+            _context.SaveChanges();
             return true;
         }
         catch

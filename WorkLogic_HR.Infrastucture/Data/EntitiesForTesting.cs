@@ -29,7 +29,6 @@ public class Employee
     public string? JobPosition { get; set; }
 }
 
-[Table("PublicHolidays")] //this class is mapped to publicHolidays table
 public class PublicHolidays
 {
     [Key]
