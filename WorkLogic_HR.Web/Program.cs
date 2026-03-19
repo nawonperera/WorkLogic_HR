@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddMemoryCache();
 //added Addsingleton because same cache use everywhere from the start.
 builder.Services.AddSingleton<CacheHelper>();
 

@@ -73,6 +73,7 @@ public class EmployeeService : IEmployeeService
     {
         return _cacheHelper.Cached("Get_Employees", () =>
         {
+            Console.WriteLine("Fetching employees from DATABASE");
             return _employeeRepository.GetAll().Select(e => MapToDto(e)).ToList();
         });
 
