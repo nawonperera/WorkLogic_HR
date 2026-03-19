@@ -34,7 +34,7 @@
         <div class="col-md-6 text-center bg-light border p-4 rounded">
 
             @if (Model.StartDate.Value.DayOfWeek == DayOfWeek.Saturday
-                                    || Model.StartDate.Value.DayOfWeek == DayOfWeek.Sunday)
+                                                || Model.StartDate.Value.DayOfWeek == DayOfWeek.Sunday)
             {
                 <p class="text-danger small">
                     Start date falls on a weekend!
@@ -50,6 +50,35 @@
                 </p>
                 <hr />
             }
+
+            @if (Model.PublicHolidaysBetweenDates.Any())
+            {
+                <table class="table table-sm table-bordered mt-4 text-start">
+                    <thead><tr><th>Holiday Date</th><th>Holiday Name</th></tr></thead>
+                    <tbody>
+                        @foreach (var h in Model.PublicHolidaysBetweenDates)
+                        {
+                            <tr><td>@h.Date.ToShortDateString()</td><td>@h.Name</td></tr>
+                        }
+                    </tbody>
+                </table>
+            }
         </div>
     </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function()
+        {
+            const selectDate = $("#StartDate").val()
+            const date = new Date(selectDate)
+            const day = date.getUTCDay();
+
+            if (day == 0 || day == 6) {
+                    $('[data-valmsg-for="StartDate"]').text("you have to choose a week day as a starting date");
+            }
+        })
+    </script>
 }

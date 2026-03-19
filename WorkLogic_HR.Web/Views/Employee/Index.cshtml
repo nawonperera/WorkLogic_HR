@@ -52,15 +52,3 @@ else
     </div>
 }
 
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#employeeSearch').on('keyup', function () {
-                var value = $(this).val().toLowerCase();
-                $("#employeeTable tbody tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-        });
-    </script>
-}

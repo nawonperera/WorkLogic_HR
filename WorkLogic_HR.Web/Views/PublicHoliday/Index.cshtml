@@ -12,20 +12,7 @@
     </div>
 </div>
 
-<div class="card mb-3">
-    <div class="card-body bg-light">
-        <div class="row">
-            <div class="col-auto">
-                <label class="form-label mb-0 pt-2">Filter by Year:</label>
-            </div>
-            <div class="col-auto">
-                <select id="yearFilter" class="form-select">
-                    <option value="all">All Years</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 @if (!Model.Any())
 {
@@ -53,7 +40,7 @@ else
                     <td class="fw-semibold">@holiday.Name</td>
                     <td>
                         <form asp-action="Delete" asp-route-id="@holiday.Id" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-outline-danger" id="deleteBtn">Delete</button>
+                            <button type="submit" class="btn btn-sm btn-outline-danger deleteBtn">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -64,27 +51,9 @@ else
 
 @section Scripts {
     <script>
+        
         $(document).ready(function () {
-            var years = [];
-            $('#holidayTable .holiday-row').each(function () {
-                var year = $(this).data('year');
-                if ($.inArray(year, years) === -1) {
-                    years.push(year);
-                    $('#yearFilter').append('<option value="' + year + '">' + year + '</option>');
-                }
-            });
-
-            $('#yearFilter').on('change', function () {
-                var year = $(this).val();
-                if (year === 'all') {
-                    $('#holidayTable .holiday-row').show();
-                } else {
-                    $('#holidayTable .holiday-row').hide().filter('[data-year="' + year + '"]').show();
-                }
-            });
-        });
-        $(document).ready(function () {
-            $("#deleteBtn").click(function () {
+            $(".deleteBtn").click(function () {
                 return confirm("Delete holiday?");
             });
         });
