@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WorkLogic_HR.Core.Domain.RepositoryContracts;
+using WorkLogic_HR.Core.Helpers;
 using WorkLogic_HR.Core.ServiceContracts;
 using WorkLogic_HR.Core.Services;
 using WorkLogic_HR.Infrastucture.Repository;
@@ -8,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//added Addsingleton because same cache use everywhere from the start.
+builder.Services.AddSingleton<CacheHelper>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection")));
 

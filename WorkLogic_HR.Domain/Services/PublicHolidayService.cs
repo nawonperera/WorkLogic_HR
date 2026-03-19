@@ -4,6 +4,7 @@ using System.Text;
 using WorkLogic_HR.Core.Domain.Entities;
 using WorkLogic_HR.Core.Domain.RepositoryContracts;
 using WorkLogic_HR.Core.DTO;
+using WorkLogic_HR.Core.Helpers;
 using WorkLogic_HR.Core.ServiceContracts;
 
 namespace WorkLogic_HR.Core.Services;
@@ -11,10 +12,11 @@ namespace WorkLogic_HR.Core.Services;
 public class PublicHolidayService : IPublicHolidayServiec
 {
     private readonly IPublicHolidayRepository _holidayRepository;
-
-    public PublicHolidayService(IPublicHolidayRepository holidayRepository)
+    private readonly CacheHelper _cacheHelper;
+    public PublicHolidayService(IPublicHolidayRepository holidayRepository, CacheHelper cacheHelper)
     {
         _holidayRepository = holidayRepository;
+        _cacheHelper = cacheHelper;
     }
     public bool CreateHoliday(PublicHolidayDto holiday)
     {
@@ -22,6 +24,7 @@ public class PublicHolidayService : IPublicHolidayServiec
         {
             throw new ArgumentNullException(nameof(holiday));
         }
+        _cacheHelper.RemoveCache("all_public_holidays");
 
         PublicHolidays holidayEntity = MapToEntity(holiday);
 
@@ -36,6 +39,7 @@ public class PublicHolidayService : IPublicHolidayServiec
         {
             return false;
         }
+        _cacheHelper.RemoveCache("all_public_holidays");
         PublicHolidays? holiday = _holidayRepository.GetById(id);
         if (holiday == null)
         {
@@ -68,7 +72,10 @@ public class PublicHolidayService : IPublicHolidayServiec
 
     public List<PublicHolidayDto> PublicHolidays()
     {
-        return _holidayRepository.GetAll().Select(e => MapToDto(e)).ToList();
+        return _cacheHelper.CacheLong("all_public_holidays", () =>
+        {
+            return _holidayRepository.GetAll().Select(e => MapToDto(e)).ToList();
+        });
     }
 
     public bool UpdateHoliday(PublicHolidayDto holiday)
@@ -77,7 +84,7 @@ public class PublicHolidayService : IPublicHolidayServiec
         {
             throw new ArgumentNullException(nameof(holiday));
         }
-
+        _cacheHelper.RemoveCache("all_public_holidays");
         PublicHolidays holidayEntity = MapToEntity(holiday);
 
         _holidayRepository.Update(holidayEntity);

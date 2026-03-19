@@ -1,18 +1,20 @@
 ﻿using WorkLogic_HR.Core.Domain.Entities;
 using WorkLogic_HR.Core.Domain.RepositoryContracts;
 using WorkLogic_HR.Core.DTO;
+using WorkLogic_HR.Core.Helpers;
 using WorkLogic_HR.Core.ServiceContracts;
-using WorkLogic_HR.Infrastucture.Repository.IRepository;
 
 namespace WorkLogic_HR.Core.Services;
 
 public class EmployeeService : IEmployeeService
 {
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly CacheHelper _cacheHelper;
 
-    public EmployeeService(IEmployeeRepository employeeRespository)
+    public EmployeeService(IEmployeeRepository employeeRespository, CacheHelper cacheHelper)
     {
         _employeeRepository = employeeRespository;
+        _cacheHelper = cacheHelper;
     }
     public bool CreateEmployee(EmployeeDto employee)
     {
@@ -20,11 +22,12 @@ public class EmployeeService : IEmployeeService
         {
             throw new ArgumentNullException(nameof(employee));
         }
-            
+        _cacheHelper.RemoveCache("Get_Employees");
+
         Employee person = MapToEntity(employee);
 
         _employeeRepository.Create(person);
-
+        
         return _employeeRepository.Save();
     }
 
@@ -34,6 +37,7 @@ public class EmployeeService : IEmployeeService
         {
             return false;
         }
+        _cacheHelper.RemoveCache("Get_Employees");
         Employee? person = _employeeRepository.GetById(id);
         if(person == null)
         {
@@ -45,12 +49,17 @@ public class EmployeeService : IEmployeeService
 
     public List<EmployeeDto> FilerEmployees(Func<EmployeeDto, bool> filter)
     {
+        
         return GetAllEmployees().Where(filter).ToList();
     }
 
     public List<EmployeeDto> GetAllEmployees()
     {
-        return _employeeRepository.GetAll().Select(e=>MapToDto(e)).ToList();
+        return _cacheHelper.Cached("Get_Employees", () =>
+        {
+            return _employeeRepository.GetAll().Select(e => MapToDto(e)).ToList();
+        });
+        
     }
 
     public EmployeeDto? GetEmployeeById(int id)
@@ -73,6 +82,7 @@ public class EmployeeService : IEmployeeService
         {
             throw new ArgumentNullException(nameof(employee));
         }
+        _cacheHelper.RemoveCache("Get_Employees");
 
         Employee person = MapToEntity(employee);
 
