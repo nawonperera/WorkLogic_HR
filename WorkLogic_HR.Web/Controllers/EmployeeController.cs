@@ -12,13 +12,14 @@ public class EmployeeController : Controller
     {
         _employeeService = employeeService;
     }
+    
+
     public IActionResult Index()
     {
         List<EmployeeDto> employees = _employeeService.GetAllEmployees();
         return View(employees);
     }
 
-    
 
     public IActionResult IndividualDetails(int? id)
     {

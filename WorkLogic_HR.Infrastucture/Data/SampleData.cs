@@ -1,4 +1,6 @@
-﻿namespace WorkLogic_HR.Infrastucture;
+﻿using WorkLogic_HR.Core.Domain.Entities;
+
+namespace WorkLogic_HR.Infrastucture;
 
 //I have created the following sample data from CHATGPT
 public  class SampleData

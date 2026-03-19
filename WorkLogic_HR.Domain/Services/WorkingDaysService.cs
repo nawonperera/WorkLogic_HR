@@ -37,7 +37,7 @@ public class WorkingDaysService : IWorkingDaysService
 
         while (currentDate <= endDate.Date)
         {
-            if (!publicHolidays.Any(h => h.Date.Date == currentDate))
+            if (!publicHolidays.Any(x => x.Date.Date == currentDate) && currentDate.DayOfWeek != DayOfWeek.Sunday && currentDate.DayOfWeek != DayOfWeek.Saturday)
             {
                 workingDays++;
             }

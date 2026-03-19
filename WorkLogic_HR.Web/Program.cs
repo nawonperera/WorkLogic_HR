@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using WorkLogic_HR.Core.Domain.RepositoryContracts;
 using WorkLogic_HR.Core.ServiceContracts;
 using WorkLogic_HR.Core.Services;
-using WorkLogic_HR.Infrastucture;
-using WorkLogic_HR.Infrastucture.Data;
 using WorkLogic_HR.Infrastucture.Repository;
-using WorkLogic_HR.Infrastucture.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +11,13 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection")));
 
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IPublicHolidayRepository, PublicHolidayRepository>();
+
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddScoped<IRepository<Employee>, EmployeeRepository>();
+builder.Services.AddScoped<IPublicHolidayServiec, PublicHolidayService>();
+builder.Services.AddScoped<IWorkingDaysService, WorkingDaysService>();
+
 
 var app = builder.Build();
 
@@ -33,7 +36,9 @@ app.UseAuthorization();
 
 app.MapStaticAssets();
 
-app.MapControllers();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Employee}/{action=Index}/{id?}");
 
 
 app.Run();
