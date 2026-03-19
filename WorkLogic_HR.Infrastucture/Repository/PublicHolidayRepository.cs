@@ -49,8 +49,9 @@ public class PublicHolidayRepository : IPublicHolidayRepository
             _context.SaveChanges();
             return true;
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine($"PublicHoliday Save Failed: {ex.Message}");
             return false;
         }
     }

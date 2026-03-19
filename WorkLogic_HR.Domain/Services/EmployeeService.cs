@@ -18,38 +18,54 @@ public class EmployeeService : IEmployeeService
     }
     public bool CreateEmployee(EmployeeDto employee)
     {
-        if (employee == null)
+        try
         {
-            throw new ArgumentNullException(nameof(employee));
+            if (employee == null)
+            {
+                throw new ArgumentNullException(nameof(employee));
+            }
+            _cacheHelper.RemoveCache("Get_Employees");
+
+            Employee person = MapToEntity(employee);
+
+            _employeeRepository.Create(person);
+
+            return _employeeRepository.Save();
         }
-        _cacheHelper.RemoveCache("Get_Employees");
-
-        Employee person = MapToEntity(employee);
-
-        _employeeRepository.Create(person);
-        
-        return _employeeRepository.Save();
+        catch (Exception ex)
+        {
+            Console.WriteLine($"{nameof(CreateEmployee)}: {ex.Message}");
+            return false;
+        }
     }
 
     public bool DeleteEmployee(int id)
     {
-        if (id <= 0)
+        try
         {
+            if (id <= 0)
+            {
+                return false;
+            }
+            _cacheHelper.RemoveCache("Get_Employees");
+            Employee? person = _employeeRepository.GetById(id);
+            if (person == null)
+            {
+                return false;
+            }
+            _employeeRepository.Delete(id);
+            return _employeeRepository.Save();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"{nameof(DeleteEmployee)} (ID: {id}): {ex.Message}");
             return false;
         }
-        _cacheHelper.RemoveCache("Get_Employees");
-        Employee? person = _employeeRepository.GetById(id);
-        if(person == null)
-        {
-            return false;
-        }
-        _employeeRepository.Delete(id);
-        return _employeeRepository.Save();
     }
 
     public List<EmployeeDto> FilerEmployees(Func<EmployeeDto, bool> filter)
     {
-        
+
         return GetAllEmployees().Where(filter).ToList();
     }
 
@@ -59,7 +75,7 @@ public class EmployeeService : IEmployeeService
         {
             return _employeeRepository.GetAll().Select(e => MapToDto(e)).ToList();
         });
-        
+
     }
 
     public EmployeeDto? GetEmployeeById(int id)
@@ -78,16 +94,24 @@ public class EmployeeService : IEmployeeService
 
     public bool UpdateEmpoyee(EmployeeDto employee)
     {
-        if (employee == null)
+        try
         {
-            throw new ArgumentNullException(nameof(employee));
+            if (employee == null)
+            {
+                throw new ArgumentNullException(nameof(employee));
+            }
+            _cacheHelper.RemoveCache("Get_Employees");
+
+            Employee person = MapToEntity(employee);
+
+            _employeeRepository.Update(person);
+            return _employeeRepository.Save();
         }
-        _cacheHelper.RemoveCache("Get_Employees");
-
-        Employee person = MapToEntity(employee);
-
-        _employeeRepository.Update(person);
-        return _employeeRepository.Save();
+        catch (Exception ex)
+        {
+            Console.WriteLine($"{nameof(UpdateEmpoyee)}: {ex.Message}");
+            return false;
+        }
     }
 
     //Helper methods to Employee to EmployeeDto Viseversa (We can use automapper for this. since there is few properties here I am using this)

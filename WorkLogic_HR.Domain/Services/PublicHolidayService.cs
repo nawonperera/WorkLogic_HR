@@ -20,33 +20,49 @@ public class PublicHolidayService : IPublicHolidayServiec
     }
     public bool CreateHoliday(PublicHolidayDto holiday)
     {
-        if (holiday == null)
+        try
         {
-            throw new ArgumentNullException(nameof(holiday));
+            if (holiday == null)
+            {
+                throw new ArgumentNullException(nameof(holiday));
+            }
+            _cacheHelper.RemoveCache("all_public_holidays");
+
+            PublicHolidays holidayEntity = MapToEntity(holiday);
+
+            _holidayRepository.Create(holidayEntity);
+
+            return _holidayRepository.Save();
         }
-        _cacheHelper.RemoveCache("all_public_holidays");
-
-        PublicHolidays holidayEntity = MapToEntity(holiday);
-
-        _holidayRepository.Create(holidayEntity);
-
-        return _holidayRepository.Save();
+        catch (Exception ex)
+        {
+            Console.WriteLine($"{nameof(CreateHoliday)}: {ex.Message}");
+            return false;
+        }
     }
 
     public bool DeleteHoliday(int id)
     {
-        if (id <= 0)
+        try
         {
+            if (id <= 0)
+            {
+                return false;
+            }
+            _cacheHelper.RemoveCache("all_public_holidays");
+            PublicHolidays? holiday = _holidayRepository.GetById(id);
+            if (holiday == null)
+            {
+                return false;
+            }
+            _holidayRepository.Delete(id);
+            return _holidayRepository.Save();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"{nameof(DeleteHoliday)}: {ex.Message}");
             return false;
         }
-        _cacheHelper.RemoveCache("all_public_holidays");
-        PublicHolidays? holiday = _holidayRepository.GetById(id);
-        if (holiday == null)
-        {
-            return false;
-        }
-        _holidayRepository.Delete(id);
-        return _holidayRepository.Save();
     }
 
     public PublicHolidayDto? GetHolidayById(int id)
@@ -80,15 +96,23 @@ public class PublicHolidayService : IPublicHolidayServiec
 
     public bool UpdateHoliday(PublicHolidayDto holiday)
     {
-        if (holiday == null)
+        try
         {
-            throw new ArgumentNullException(nameof(holiday));
-        }
-        _cacheHelper.RemoveCache("all_public_holidays");
-        PublicHolidays holidayEntity = MapToEntity(holiday);
+            if (holiday == null)
+            {
+                throw new ArgumentNullException(nameof(holiday));
+            }
+            _cacheHelper.RemoveCache("all_public_holidays");
+            PublicHolidays holidayEntity = MapToEntity(holiday);
 
-        _holidayRepository.Update(holidayEntity);
-        return _holidayRepository.Save();
+            _holidayRepository.Update(holidayEntity);
+            return _holidayRepository.Save();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"{nameof(UpdateHoliday)}: {ex.Message}");
+            return false;
+        }
     }
 
     //Helper methods to Employee to EmployeeDto Viseversa (We can use automapper for this. since there is few properties here I am using this)

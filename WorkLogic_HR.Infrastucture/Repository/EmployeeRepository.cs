@@ -75,8 +75,9 @@ public class EmployeeRepository : IEmployeeRepository
             _context.SaveChanges();
             return true;
         }
-        catch
+        catch(Exception ex)
         {
+            Console.WriteLine(ex.ToString());
             return false;
         }
     }
